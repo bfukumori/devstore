@@ -1,3 +1,4 @@
+import { AddToCart } from '@/components/add-to-cart';
 import { api } from '@/data/api';
 import { Product } from '@/data/types/product';
 import { formatParcels } from '@/utils/formatParcels';
@@ -91,12 +92,7 @@ export default async function ProductPage({ params }: ProductProps) {
             </button>
           </div>
         </div>
-        <button
-          type="button"
-          className="mt-8 flex h-12 items-center justify-center rounded-full bg-emerald-600 font-semibold text-white"
-        >
-          Adicionar ao carrinho
-        </button>
+        <AddToCart productId={product.id} />
       </div>
     </div>
   );
