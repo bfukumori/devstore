@@ -37,11 +37,30 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Cypress install
+        uses: cypress-io/github-action@v6
+        with:
+          runTests: false
+          build: pnpm run build
+
+      - name: Save build folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          if-no-files-found: error
+          path: build
+
+      - name: Download the build folder
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         env:
           APP_URL: 'http://localhost:3000'
           NEXT_PUBLIC_API_BASE_URL: 'https://ignite-devstore-api-beige.vercel.app/'
         with:
-          build: pnpm run build
           start: pnpm start
+          browser: chrome
