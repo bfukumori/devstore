@@ -1,10 +1,11 @@
-name: Cypress Tests
+name: Run E2E tests
 
 on: push
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -14,7 +15,7 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install PNPM
+      - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -24,7 +25,6 @@ jobs:
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
       - uses: actions/cache@v3
         name: Setup pnpm cache
         with:
@@ -32,7 +32,6 @@ jobs:
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-
       - name: Install dependencies
         run: pnpm install
 
@@ -42,5 +41,5 @@ jobs:
           APP_URL: 'http://localhost:3000'
           NEXT_PUBLIC_API_BASE_URL: 'https://ignite-devstore-api-beige.vercel.app/'
         with:
-          build: pnpm run build
-          start: pnpm start
+          build: npm run build
+          start: npm start
