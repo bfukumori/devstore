@@ -3,7 +3,6 @@ import { api } from '@/data/api';
 import { Product } from '@/data/types/product';
 import { formatParcels } from '@/utils/formatParcels';
 import { formatPrice } from '@/utils/formatPrice';
-import { Metadata } from 'next';
 import Image from 'next/image';
 
 interface ProductProps {
