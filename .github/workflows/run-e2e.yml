@@ -10,16 +10,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
           run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
 
       - name: Get pnpm store directory
         shell: bash
@@ -43,5 +44,5 @@ jobs:
           APP_URL: 'http://localhost:3000'
           NEXT_PUBLIC_API_BASE_URL: 'https://ignite-devstore-api-beige.vercel.app/'
         with:
-          build: npm run build
-          start: npm start
+          build: pnpm run build
+          start: pnpm start
