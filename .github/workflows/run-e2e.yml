@@ -10,16 +10,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
           version: 8
           run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
 
       - name: Get pnpm store directory
         shell: bash
@@ -36,14 +37,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-
-      - uses: actions/cache@v3
-        name: Setup Cypress cache
-        with:
-          path: ~/.cache/Cypress
-          key: ${{ runner.os }}-cypress-installation-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-cypress-installation-
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
