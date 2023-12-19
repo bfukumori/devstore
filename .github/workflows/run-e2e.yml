@@ -11,7 +11,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
 
@@ -25,13 +25,23 @@ jobs:
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
         with:
           path: ${{ env.STORE_PATH }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
+
+      - uses: actions/cache@v3
+        name: Setup Cypress cache
+        with:
+          path: |
+            ~/.cache/Cypress
+            ./cypress/videos
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/cypress.json') }}
+
       - name: Install dependencies
         run: pnpm install
 
@@ -41,5 +51,5 @@ jobs:
           APP_URL: 'http://localhost:3000'
           NEXT_PUBLIC_API_BASE_URL: 'https://ignite-devstore-api-beige.vercel.app/'
         with:
-          build: npm run build
-          start: npm start
+          build: pnpm run build
+          start: pnpm start
